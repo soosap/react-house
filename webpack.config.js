@@ -1,11 +1,12 @@
 'use strict';
 
 var webpack = require('webpack');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: {
         top: [
-            './src/main.scss'
+            'bootstrap-sass!./src/styles/bootstrap/bootstrap-sass.config.js'
         ],
         bottom: [
             './src/main.js'
@@ -30,11 +31,23 @@ module.exports = {
     ],
     module: {
         preLoaders: [
-            { test: /\.(js)$/, exclude: /(node_modules)/, loader: "jshint-loader" }
+            { test: /\.(js)$/, exclude: /(node_modules|bootstrap)/, loader: "jshint-loader" }
         ],
         loaders: [
-            { test: /\.(css)$/, exclude: /node_modules/, loader: "style-loader!css-loader!autoprefixer-loader" },
-            { test: /\.(scss)$/, exclude: /node_modules/, loader: "style-loader!css-loader!autoprefixer-loader!sass-loader" }
+            { test: /\.(css)$/, exclude: /(node_modules|bootstrap)/, loader: "style-loader!css-loader!autoprefixer-loader" },
+            { test: /\.(scss)$/, exclude: /(node_modules|bootstrap)/, loader: "style-loader!css-loader!autoprefixer-loader!sass-loader" },
+
+            // **IMPORTANT** This is needed so that each bootstrap js file required by
+            // bootstrap-webpack has access to the jQuery object
+            { test: /bootstrap\/js\//, loader: 'imports?jQuery=jquery' },
+
+            // Needed for the css-loader when [bootstrap-webpack](https://github.com/bline/bootstrap-webpack)
+            // loads bootstrap's css.
+            { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,   loader: "url?limit=10000&mimetype=application/font-woff" },
+            { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,  loader: "url?limit=10000&mimetype=application/font-woff" },
+            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,    loader: "url?limit=10000&mimetype=application/octet-stream" },
+            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,    loader: "file" },
+            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,    loader: "url?limit=10000&mimetype=image/svg+xml" }
         ]
     }
 };

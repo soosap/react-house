@@ -1,1 +1,1 @@
-console.log('hello');
+$ = jQuery = require('jquery');
