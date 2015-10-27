@@ -1,8 +1,7 @@
 "use strict";
 
 var gulp = require('gulp');
-var connect = require('gulp-connect');
-var open = require('gulp-open');
+var livereload = require('gulp-livereload');
 
 /*
  |--------------------------------------------------------------------------
@@ -13,7 +12,7 @@ var open = require('gulp-open');
  |
 */
 var config = {
-    port: 9005,
+    port: 8080,
     devBaseUrl: 'http://localhost',
     paths: {
         html: './src/*.html',
@@ -23,48 +22,26 @@ var config = {
 
 /*
  |--------------------------------------------------------------------------
- | Start a local development server
- |--------------------------------------------------------------------------
-*/
-gulp.task('connect', function () {
-    connect.server({
-        root: ['dist'],
-        port: config.port,
-        base: config.devBaseUrl,
-        livereload: true
-    })
-});
-
-/*
- |--------------------------------------------------------------------------
- | Open a given file in the browser
- |--------------------------------------------------------------------------
-*/
-gulp.task('open', ['connect'], function () {
-    gulp.src('dist/index.html')
-        .pipe(open({
-            uri: config.devBaseUrl + ':' + config.port + '/'
-        }));
-});
-
-/*
- |--------------------------------------------------------------------------
  | Handle html file transfer into dist
  |--------------------------------------------------------------------------
 */
 gulp.task('html', function () {
     gulp.src(config.paths.html)
         .pipe(gulp.dest(config.paths.dist))
-        .pipe(connect.reload());
+        .pipe(livereload())
 });
 
 /*
  |--------------------------------------------------------------------------
- | Watch files for changes
+ | Watch html files for changes
  |--------------------------------------------------------------------------
 */
 gulp.task('watch', function () {
-    gulp.watch(config.paths.html, ['html']);
+    livereload.listen(35729, function (err) {
+        if (err) { console.log(err); }
+
+        gulp.watch(config.paths.html, ['html']);
+    });
 });
 
 /*
@@ -72,4 +49,4 @@ gulp.task('watch', function () {
  | Default task
  |--------------------------------------------------------------------------
 */
-gulp.task('default', ['html', 'open', 'watch']);
+gulp.task('default', ['html', 'watch']);
