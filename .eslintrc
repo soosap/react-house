@@ -15,7 +15,7 @@
     "no-underscore-dangle": 1,
     "no-alert": 1,
     "no-lone-blocks": 1,
-    "no-undef": 1,
+    "no-undef": 2,
     "semi": [2, "always"]
   },
   "globals": {
