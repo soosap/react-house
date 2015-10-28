@@ -1,7 +1,6 @@
 'use strict';
 
 var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -31,7 +30,9 @@ module.exports = {
     ],
     module: {
         preLoaders: [
-            { test: /\.(js)$/, exclude: /(node_modules|bootstrap)/, loader: "jshint-loader" }
+            // ESLint lints js code, including JSX
+            { test: /(\.js$|\.jsx$)/, exclude: /(node_modules|bootstrap)/, loader: "eslint-loader" }
+
         ],
         loaders: [
             { test: /\.(css)$/, exclude: /(node_modules|bootstrap)/, loader: "style-loader!css-loader!autoprefixer-loader" },
@@ -49,5 +50,8 @@ module.exports = {
             { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,    loader: "file" },
             { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,    loader: "url?limit=10000&mimetype=image/svg+xml" }
         ]
+    },
+    eslint: {
+        configFile: '.eslintrc'
     }
 };

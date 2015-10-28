@@ -1,1 +1,1 @@
-$ = jQuery = require('jquery');
+$ = jQuery = require("jquery");
