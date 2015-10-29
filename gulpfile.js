@@ -12,12 +12,13 @@ var livereload = require('gulp-livereload');
  |
 */
 var config = {
-    port: 8080,
-    devBaseUrl: 'http://localhost',
-    paths: {
-        html: './src/*.html',
-        dist: './dist'
-    }
+	port: 8080,
+	devBaseUrl: 'http://localhost',
+	paths: {
+		html: './src/*.html',
+		dist: './dist',
+		images: './src/images/*'
+	}
 };
 
 /*
@@ -26,10 +27,25 @@ var config = {
  |--------------------------------------------------------------------------
 */
 gulp.task('html', function () {
-    gulp.src(config.paths.html)
-        .pipe(gulp.dest(config.paths.dist))
-        .pipe(livereload())
+	gulp.src(config.paths.html)
+		.pipe(gulp.dest(config.paths.dist))
+		.pipe(livereload())
 });
+
+
+/*
+ |--------------------------------------------------------------------------
+ | Handle image file transfer into dist
+ |--------------------------------------------------------------------------
+ */
+gulp.task('images', function () {
+	gulp.src(config.paths.images)
+		.pipe(gulp.dest(config.paths.dist + '/images'));
+
+	gulp.src('./src/favicon.ico')
+		.pipe(gulp.dest(config.paths.dist));
+});
+
 
 /*
  |--------------------------------------------------------------------------
@@ -37,11 +53,11 @@ gulp.task('html', function () {
  |--------------------------------------------------------------------------
 */
 gulp.task('watch', function () {
-    livereload.listen(35729, function (err) {
-        if (err) { console.log(err); }
+	livereload.listen(35729, function (err) {
+		if (err) { console.log(err); }
 
-        gulp.watch(config.paths.html, ['html']);
-    });
+		gulp.watch(config.paths.html, ['html']);
+	});
 });
 
 /*
@@ -49,4 +65,4 @@ gulp.task('watch', function () {
  | Default task
  |--------------------------------------------------------------------------
 */
-gulp.task('default', ['html', 'watch']);
+gulp.task('default', ['html', 'images', 'watch']);

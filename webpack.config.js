@@ -35,6 +35,7 @@ module.exports = {
 
         ],
         loaders: [
+            { test: /(\.js$|\.jsx$)$/, exclude: /(node_modules)/, loader: "babel-loader" },
             { test: /\.(css)$/, exclude: /(node_modules|bootstrap)/, loader: "style-loader!css-loader!autoprefixer-loader" },
             { test: /\.(scss)$/, exclude: /(node_modules|bootstrap)/, loader: "style-loader!css-loader!autoprefixer-loader!sass-loader" },
 
