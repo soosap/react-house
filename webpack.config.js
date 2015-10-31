@@ -5,7 +5,8 @@ var webpack = require('webpack');
 module.exports = {
     entry: {
         top: [
-            'bootstrap-sass!./src/styles/bootstrap/bootstrap-sass.config.js'
+            'bootstrap-sass!./src/styles/bootstrap/bootstrap-sass.config.js',
+						'./node_modules/toastr/build/toastr.css'
         ],
         bottom: [
             './src/main.js'
@@ -36,7 +37,7 @@ module.exports = {
         ],
         loaders: [
             { test: /(\.js$|\.jsx$)$/, exclude: /(node_modules)/, loader: "babel-loader" },
-            { test: /\.(css)$/, exclude: /(node_modules|bootstrap)/, loader: "style-loader!css-loader!autoprefixer-loader" },
+            { test: /\.(css)$/, exclude: /(bootstrap)/, loader: "style-loader!css-loader!autoprefixer-loader" },
             { test: /\.(scss)$/, exclude: /(node_modules|bootstrap)/, loader: "style-loader!css-loader!autoprefixer-loader!sass-loader" },
 
             // **IMPORTANT** This is needed so that each bootstrap js file required by
