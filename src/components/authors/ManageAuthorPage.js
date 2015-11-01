@@ -3,7 +3,12 @@
 var React = require('react');
 var Router = require('react-router');
 var AuthorForm = require('./AuthorForm');
-var AuthorApi = require('../../api/authorApi');
+
+/* The reference to the API is no longer needed as it is now handled by Flux's AuthorStore and AuthorActions. */
+//var AuthorApi = require('../../api/authorApi');
+
+var AuthorStore = require('../../stores/authorStore');
+var AuthorActions = require('../../actions/authorActions');
 
 var toastr = require('toastr');
 
@@ -12,13 +17,13 @@ var ManageAuthorPage = React.createClass({
 		Router.Navigation
 	],
 
-	statics: {
-		willTransitionFrom: function (transition, component) {
-			if (component.state.dirty && !confirm('Leave without saving?')) {
-				transition.abort();
-			}
-		}
-	},
+	//statics: {
+	//	willTransitionFrom: function (transition, component) {
+	//		if (component.state.dirty && !confirm('Leave without saving?')) {
+	//			transition.abort();
+	//		}
+	//	}
+	//},
 
 	getInitialState: function() {
 	  return {
@@ -38,7 +43,7 @@ var ManageAuthorPage = React.createClass({
 
 		if (authorId) {
 			this.setState({
-			  author: AuthorApi.getAuthorById(authorId)
+			  author: AuthorStore.getAuthorById(authorId)
 			});
 		}
 	},
@@ -86,7 +91,12 @@ var ManageAuthorPage = React.createClass({
 			return;
 		}
 
-		AuthorApi.saveAuthor(this.state.author);
+		if (this.state.author.id) {
+			AuthorActions.updateAuthor(this.state.author);
+		} else {
+			AuthorActions.createAuthor(this.state.author);
+		}
+
 		this.setState({
 		  dirty: false
 		});

@@ -3,16 +3,9 @@
 var React = require('react');
 var Router = require('react-router');
 var routes = require('./scripts/routes');
+var InitializeActions = require('./actions/initializeActions');
 
-/*
- |--------------------------------------------------------------------------
- | ESLint dependency injection
- |--------------------------------------------------------------------------
- |
- | Injecting dependencies for ESLint purposes. To be deleted in production.
- |
-*/
-
+InitializeActions.initApp();
 
 /*
  |--------------------------------------------------------------------------
